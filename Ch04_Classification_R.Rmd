@@ -241,15 +241,15 @@ Q2. What was your best performing model?
 
 Your code:
 ```{r,echo=TRUE}
-#
-#
+glm_fit<- glm(SURVIVED_bin~AGE_TRUNK*SEX + CARDIOVASCULAR + ICU + CLASIFFICATION_FINAL,family=binomial,data= Train_COVID)
+glm_fit$converged
+arm::binnedplot(predict(glm_fit,type="response"),resid(glm_fit,type="response" ))
 ```
 
 Your answer:
 
 ~~~
-Please write your answer in full sentences.
-
+The best performing model 
 
 ~~~
 
