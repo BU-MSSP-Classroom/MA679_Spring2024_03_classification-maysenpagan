@@ -221,7 +221,7 @@ table(Test_COVID$SURVIVED)/nrow(Test_COVID)
 ```
 
 
-Q1. What metric will you use? Why? 
+Q1. What metric will you use to evaluate covid model? Why? 
 
 Your code:
 ```{r,echo=TRUE}
@@ -232,8 +232,6 @@ Your code:
 Your answer:
 
 ~~~
-Please write your answer in full sentences.
-
 
 ~~~
 
@@ -241,9 +239,12 @@ Q2. What was your best performing model?
 
 Your code:
 ```{r,echo=TRUE}
-glm_fit<- glm(SURVIVED_bin~AGE_TRUNK*SEX + CARDIOVASCULAR + ICU + CLASIFFICATION_FINAL,family=binomial,data= Train_COVID)
+glm_fit<- glm(SURVIVED_bin~INTUBED*AGE_TRUNK + PNEUMONIA + CLASIFFICATION_FINAL + TOBACCO,family=binomial,data= Train_COVID)
 glm_fit$converged
 arm::binnedplot(predict(glm_fit,type="response"),resid(glm_fit,type="response" ))
+logit_P = predict(glm_fit,Covid_Data,type="response")
+roc_score=roc(Covid_Data$SURVIVED_bin, logit_P) #AUC score
+plot(roc_score ,main ="ROC curve -- Logistic Regression ")
 ```
 
 Your answer:
@@ -265,7 +266,7 @@ Your code:
 Your answer:
 
 ~~~
-Please write your answer in full sentences.
+Why you add interaction terms, why you chose certain variables.
 
 
 ~~~
@@ -296,8 +297,11 @@ In this problem, you will develop a model to predict whether a given car gets hi
 
 Your code:
 ```{r,echo=TRUE}
-#
-#
+library(MASS)
+library(ISLR2)
+library(ggplot2)
+
+Auto$mpg01 <- ifelse(Auto$mpg>median(Auto$mpg), 1, 0)
 ```
 
 Your answer:
@@ -315,8 +319,18 @@ Please write your answer in full sentences.
 
 Your code:
 ```{r,echo=TRUE}
-#
-#
+pairs(Auto[,-9])
+Auto %>% ggplot(aes(mpg01, horsepower, group = mpg01)) + 
+  geom_boxplot() + 
+  theme_bw()
+Auto %>% ggplot(aes(mpg01, weight, group = mpg01)) + 
+  geom_boxplot() + 
+  theme_bw()
+Auto %>% ggplot(aes(mpg01, displacement, group = mpg01)) + 
+  geom_boxplot() + 
+  theme_bw()
+
+
 ```
 
 Your answer:
