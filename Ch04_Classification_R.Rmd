@@ -239,7 +239,7 @@ Q2. What was your best performing model?
 
 Your code:
 ```{r,echo=TRUE}
-glm_fit<- glm(SURVIVED_bin~INTUBED*AGE_TRUNK + PNEUMONIA + CLASIFFICATION_FINAL + TOBACCO,family=binomial,data= Train_COVID)
+glm_fit<- glm(SURVIVED_bin~SEX*AGE_TRUNK + PNEUMONIA + TOBACCO*SEX + OTHER_DISEASE,family=binomial,data= Train_COVID)
 glm_fit$converged
 arm::binnedplot(predict(glm_fit,type="response"),resid(glm_fit,type="response" ))
 logit_P = predict(glm_fit,Covid_Data,type="response")
@@ -319,6 +319,7 @@ Please write your answer in full sentences.
 
 Your code:
 ```{r,echo=TRUE}
+#(b)
 pairs(Auto[,-9])
 Auto %>% ggplot(aes(mpg01, horsepower, group = mpg01)) + 
   geom_boxplot() + 
@@ -330,14 +331,18 @@ Auto %>% ggplot(aes(mpg01, displacement, group = mpg01)) +
   geom_boxplot() + 
   theme_bw()
 
+#(c)
+set.seed(123)
 
+sample <- sample(c(TRUE, FALSE), nrow(Auto), replace=TRUE, prob=c(0.7,0.3))
+train  <- Auto[sample, ]
+test   <- Auto[!sample, ]
 ```
 
 Your answer:
 
 ~~~
-Please write your answer in full sentences.
-
+From the scatterplot matrix, it appears that `horsepower`, `weight`, and `displacement` may be associated with `mpg01`. I then created a boxplot of these variables against `mpg01` and we can see that high or low gas mileage is associated with different levels of horsepower, weight, and displacement suggesting these features may be useful in predicting `mpg01`. 
 
 ~~~
 
